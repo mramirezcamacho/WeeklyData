@@ -1,0 +1,4 @@
+1. Do a pip install of the requirements of the project
+2. download the chromedriver that suits your needs (i used: https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.137/win64/chromedriver-win64.zip)
+3. [NOT MANDATORY] If you want to instant login, create a "credentials.txt" file, the first line has to be the login, and the second line the password
+4. Enjoy!
