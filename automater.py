@@ -152,13 +152,19 @@ def enterDiDiDashboard(driver):
 
 
 def changeDate(driver):
-    click_button(
-        driver, '//*[@id="Xa6NNY6v3"]/div[2]/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/input', 1)
-    click_button(
-        driver, '//*[@id="MhrHMIXeY"]/div[3]/div[2]/div/div/div[2]/div[2]/div[1]/p/strong')
-    click_button(
-        driver, '//*[@id="Xa6NNY6v3"]/div[2]/div[2]/div/div[2]/button')
-    driver.execute_script("window.scrollTo(0, 700);")
+    while True:
+        try:
+            click_button(
+                driver, '//*[@id="Xa6NNY6v3"]/div[2]/div[2]/div/div[1]/div/div[1]/div[2]/div/div/div/div/input', 1)
+            click_button(
+                driver, '//*[@id="MhrHMIXeY"]/div[3]/div[2]/div/div/div[2]/div[2]/div[1]/p/strong')
+            click_button(
+                driver, '//*[@id="Xa6NNY6v3"]/div[2]/div[2]/div/div[2]/button')
+            driver.execute_script("window.scrollTo(0, 700);")
+            return
+        except:
+            print('Change date is not working, trying again!')
+            time.sleep(3)
 
 
 def generalClickerUsingHover(driver, hover_place_xpath: list, button_xpath: str, moreButtons: list):
@@ -297,25 +303,85 @@ def downloadData(driver, hover_place_xpath: list, button_xpath):
 
 
 def downloadDailyOrders(driver):
-    generalClickerUsingHover(driver, ['//*[@id="jDYt9enkQ"]/div[3]/div[2]/div/div[1]/div[2]/div[5]/div[1]/div[4]/div[1]/canvas',],
-                             '//*[@id="jDYt9enkQ"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
-                             [(2, '/html/body/div[193]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (5, '/html/body/div[193]/div[2]/div/div/div/div[3]/button[3]')])
     time.sleep(5)
-    generalClickerUsingHover(driver, ['//*[@id="jDYt9enkQ"]/div[3]/div[2]/div/div[1]/div[2]/div[5]/div[1]/div[4]/div[1]/canvas',],
-                             '//*[@id="jDYt9enkQ"]/div[2]/div/span/div/div/a', [(5, '/html/body/div[194]/ul/li[2]')])
+    if SME:
+        click_button(
+            driver, '//*[@id="BinsPAkmk"]/div[2]/div[1]/div/div/ul/div[1]')
+        id = 'jDYt9enkQ'
+        one = 193
+        two = 450
+    else:
+        click_button(
+            driver, '//*[@id="BinsPAkmk"]/div[2]/div[1]/div/div/ul/div[2]')
+        id = 'Fp7r46_74'
+        one = 451
+        two = 468
+    time.sleep(5)
+
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
+                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
 
     time.sleep(15)
-    generalClickerUsingHover(driver, ['//*[@id="jDYt9enkQ"]/div[3]/div[2]/div/div[1]/div[2]/div[5]/div[1]/div[4]/div[1]/canvas', '//*[@id="jDYt9enkQ"]/div[2]/div/div[1]/div/div'],
-                             '/html/body/div[450]/ul/li[1]', [(12, '/html/body/div[7]/div[2]/div/div/a/i')])
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
+                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+
+    time.sleep(3)
+    print('Finished downloading Daily Orders')
+
+
+def downloadExpMetric(driver):
+    time.sleep(5)
+    if SME:
+        click_button(
+            driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[1]')
+        id = 'TYy3UWwGs'
+        one = 459
+        two = 476
+    else:
+        click_button(
+            driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[2]')
+        id = '8cZGuRrNt'
+        one = 454
+        two = 471
+    driver.execute_script(f"window.scrollTo(0, {int(700*4.75)});")
+
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
+                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+
+    time.sleep(15)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
+                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+
+    time.sleep(3)
+    print('Finished downloading Exp metric')
+
+
+def giveMeABreak():
+    while True:
+        time.sleep(100)
+        print('que vaina loca')
 
 
 def body(driver):
     enterDiDiDashboard(driver)
     changeDate(driver)
-    time.sleep(5)
+    # giveMeABreak()
     downloadDailyOrders(driver)
+    downloadExpMetric(driver)
     time.sleep(100)
+    giveMeABreak()
 
+
+SME = 0
 
 if __name__ == "__main__":
     driver = start()
