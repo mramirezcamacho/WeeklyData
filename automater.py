@@ -304,6 +304,7 @@ def downloadData(driver, hover_place_xpath: list, button_xpath):
 
 def downloadDailyOrders(driver):
     time.sleep(5)
+    print('Started downloading Daily Orders')
     if SME:
         click_button(
             driver, '//*[@id="BinsPAkmk"]/div[2]/div[1]/div/div/ul/div[1]')
@@ -335,6 +336,8 @@ def downloadDailyOrders(driver):
 
 def downloadExpMetric(driver):
     time.sleep(5)
+    print('Started downloading Exp metric')
+    driver.execute_script(f"window.scrollTo(0, {int(700*5.7)});")
     if SME:
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[1]')
@@ -345,9 +348,8 @@ def downloadExpMetric(driver):
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[2]')
         id = '8cZGuRrNt'
-        one = 454
-        two = 471
-    driver.execute_script(f"window.scrollTo(0, {int(700*4.75)});")
+        one = 461
+        two = 478
 
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
@@ -373,9 +375,9 @@ def giveMeABreak():
 
 def body(driver):
     enterDiDiDashboard(driver)
-    changeDate(driver)
+    # changeDate(driver)
     # giveMeABreak()
-    downloadDailyOrders(driver)
+    # downloadDailyOrders(driver)
     downloadExpMetric(driver)
     time.sleep(100)
     giveMeABreak()
