@@ -193,11 +193,11 @@ def generalClickerUsingHover(driver, hover_place_xpath: list, button_xpath: str,
 
         for timeS, buttons in moreButtons:
             try:
-                time.sleep(timeS)
+                time.sleep(timeS+5)
                 click_button(
                     driver,  buttons)
             except:
-                time.sleep(timeS)
+                time.sleep(timeS+5)
                 click_button(
                     driver,  buttons)
     except Exception as e:
@@ -348,8 +348,8 @@ def downloadExpMetric(driver):
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[2]')
         id = '8cZGuRrNt'
-        one = 461
-        two = 478
+        one = 454
+        two = 471
 
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
@@ -367,7 +367,73 @@ def downloadExpMetric(driver):
     print('Finished downloading Exp metric')
 
 
+def downloadBurnMetrics(driver):
+    time.sleep(5)
+    print('Started downloading Burn Metrics')
+    driver.execute_script(f"window.scrollTo(0, {int(700*6.8)});")
+    if SME:
+        click_button(
+            driver, '//*[@id="RXUYBRryq"]/div[2]/div[1]/div/div/ul/div[1]')
+        id = 'wpXbSv9qm'
+        one = 459
+        two = 476
+    else:
+        click_button(
+            driver, '//*[@id="RXUYBRryq"]/div[2]/div[1]/div/div/ul/div[2]')
+        id = '9wFx9T-hj'
+        one = 476
+        two = 493
+
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
+                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+
+    time.sleep(15)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
+                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+
+    time.sleep(3)
+    print('Finished downloading Burn Metrics')
+
+
+def downloadAverageTickets(driver):
+    time.sleep(5)
+    print('Started downloading Average Tickets')
+    driver.execute_script(f"window.scrollTo(0, {int(700*8.5)});")
+    if SME:
+        click_button(
+            driver, '//*[@id="CjR1qoh7Q"]/div[2]/div[1]/div/div/ul/div[1]')
+        id = 'WNr6uNgu3'
+        one = 459
+        two = 476
+    else:
+        click_button(
+            driver, '//*[@id="CjR1qoh7Q"]/div[2]/div[1]/div/div/ul/div[2]')
+        id = 'YupXR3f3V'
+        one = 485
+        two = 502
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
+                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+    time.sleep(5)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+
+    time.sleep(15)
+    generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
+                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+
+    time.sleep(3)
+    print('Finished downloading Average Tickets')
+
+
 def giveMeABreak():
+    print('que vaina loca')
     while True:
         time.sleep(100)
         print('que vaina loca')
@@ -375,12 +441,11 @@ def giveMeABreak():
 
 def body(driver):
     enterDiDiDashboard(driver)
-    # changeDate(driver)
-    # giveMeABreak()
-    # downloadDailyOrders(driver)
+    changeDate(driver)
+    downloadDailyOrders(driver)
     downloadExpMetric(driver)
-    time.sleep(100)
-    giveMeABreak()
+    downloadBurnMetrics(driver)
+    downloadAverageTickets(driver)
 
 
 SME = 0
