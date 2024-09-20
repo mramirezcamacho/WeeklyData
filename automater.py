@@ -341,9 +341,9 @@ def downloadExpMetric(driver):
     if SME:
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[1]')
-        id = 'TYy3UWwGs'
-        one = 459
-        two = 476
+        id = 'vaCnXa-lF'
+        one = 353
+        two = 458
     else:
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[2]')
@@ -375,8 +375,8 @@ def downloadBurnMetrics(driver):
         click_button(
             driver, '//*[@id="RXUYBRryq"]/div[2]/div[1]/div/div/ul/div[1]')
         id = 'wpXbSv9qm'
-        one = 459
-        two = 476
+        one = 373
+        two = 459
     else:
         click_button(
             driver, '//*[@id="RXUYBRryq"]/div[2]/div[1]/div/div/ul/div[2]')
@@ -408,8 +408,8 @@ def downloadAverageTickets(driver):
         click_button(
             driver, '//*[@id="CjR1qoh7Q"]/div[2]/div[1]/div/div/ul/div[1]')
         id = 'WNr6uNgu3'
-        one = 459
-        two = 476
+        one = 413
+        two = 461
     else:
         click_button(
             driver, '//*[@id="CjR1qoh7Q"]/div[2]/div[1]/div/div/ul/div[2]')
@@ -448,7 +448,7 @@ def body(driver):
     downloadAverageTickets(driver)
 
 
-SME = 0
+SME = 1
 
 if __name__ == "__main__":
     driver = start()
