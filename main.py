@@ -231,13 +231,14 @@ NominalWo2W
 
 FOLDER = 'CKA'
 
-general, specific = 0, 1
+general, specific = 1, 0
 
 column = 'Traffic'
 column = 'R Burn / GMV'
 column = 'B2C / GMV'
 column = 'TED / GMV'
 column = 'B P1*P2'
+column = 'Daily Orders'
 
 
 city = 'Guadalajara'

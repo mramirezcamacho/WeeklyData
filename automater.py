@@ -100,6 +100,9 @@ def getDates():
     return f'{third_monday} - {last_sunday}'
 
 
+print(getDates())
+
+
 def click_button(driver, button_xpath, deleteStuff=False):
     try:
         button = driver.find_element("xpath", button_xpath)
@@ -448,7 +451,7 @@ def body(driver):
     downloadAverageTickets(driver)
 
 
-SME = 1
+SME = 0
 
 if __name__ == "__main__":
     driver = start()
