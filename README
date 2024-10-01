@@ -1,4 +1,14 @@
-1. Do a pip install of the requirements of the project
+1. Do a pip install of the requirements of the project, put in your terminal:
+   pip install -r requirements.txt
+
 2. download the chromedriver that suits your needs (i used: https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.137/win64/chromedriver-win64.zip)
-3. [NOT MANDATORY] If you want to instant login, create a "credentials.txt" file, the first line has to be the login, and the second line the password
-4. Enjoy!
+3. [NOT MANDATORY] If you want to instant login, create a "credentials.txt" file, the first line
+   has to be the login, and the second line the password
+4. Run the 'automater.py' Script, and get a coffee!
+
+5. Download the files from the Dchat urls.
+6. Download the +5 stars Rs for CKA and SME with the Dims Country Code and city_name
+   (http://star.intra.didiglobal.com/?menuId=C6DIHi0RC).
+7. run the 'textForPPTX.py' file in order to get the data for the daily orders, +5 Rs and cities rows
+   of the weekly (the other are extremely easy)
+8. Put some color in the GoogleSlide presentation
