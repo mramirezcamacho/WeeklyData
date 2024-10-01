@@ -100,22 +100,13 @@ def getDates():
     return f'{third_monday} - {last_sunday}'
 
 
-print(getDates())
-
-
 def click_button(driver, button_xpath, deleteStuff=False):
-    try:
-        button = driver.find_element("xpath", button_xpath)
-        button.click()
-        if deleteStuff:
-            pushKey(driver, button_xpath, [Keys.CONTROL, "a"])
-            pushKey(driver, button_xpath, [Keys.BACKSPACE])
-            button.send_keys(getDates())
-    except NoSuchElementException:
-        print(f"Button with XPath {button_xpath} not found.")
-    except ElementClickInterceptedException:
-        print(f"""Button with XPath {
-              button_xpath} could not be clicked (intercepted).""")
+    button = driver.find_element("xpath", button_xpath)
+    button.click()
+    if deleteStuff:
+        pushKey(driver, button_xpath, [Keys.CONTROL, "a"])
+        pushKey(driver, button_xpath, [Keys.BACKSPACE])
+        button.send_keys(getDates())
 
 
 def checkCredentials(driver, file_path='credentials.txt'):
@@ -124,10 +115,21 @@ def checkCredentials(driver, file_path='credentials.txt'):
     if result is None:
         print("File not found.")
     else:
-        first_line, second_line = result
-        writeInBox(driver, '//*[@id="username"]', first_line)
-        writeInBox(driver, '//*[@id="password"]', second_line)
-        click_button(driver, '//*[@id="submit"]')
+        while True:
+            try:
+                first_line, second_line = result
+                writeInBox(driver, '//*[@id="username"]', first_line)
+                writeInBox(driver, '//*[@id="password"]', second_line)
+                while True:
+                    try:
+                        click_button(driver, '//*[@id="submit"]')
+                        break
+                    except:
+                        print('Submit button not found')
+                break
+            except:
+                print('Credentials found, trying again the login')
+                time.sleep(5)
     return
 
 
@@ -137,7 +139,6 @@ def is_page_loading(driver):
 
 def enterDiDiDashboard(driver):
     # XPath for the submit button
-    time.sleep(10)
     checkCredentials(driver)
     xpath = '//*[@id="submit"]'
     while check_element(driver, xpath) and 'https://me.didiglobal.com/project/stargate-auth/html/login.html' in driver.current_url:
@@ -163,7 +164,7 @@ def changeDate(driver):
                 driver, '//*[@id="MhrHMIXeY"]/div[3]/div[2]/div/div/div[2]/div[2]/div[1]/p/strong')
             click_button(
                 driver, '//*[@id="Xa6NNY6v3"]/div[2]/div[2]/div/div[2]/button')
-            driver.execute_script("window.scrollTo(0, 700);")
+            driver.execute_script("window.scrollTo(3, 700);")
             return
         except:
             print('Change date is not working, trying again!')
@@ -195,112 +196,14 @@ def generalClickerUsingHover(driver, hover_place_xpath: list, button_xpath: str,
         button.click()
 
         for timeS, buttons in moreButtons:
-            try:
-                time.sleep(timeS+5)
-                click_button(
-                    driver,  buttons)
-            except:
-                time.sleep(timeS+5)
-                click_button(
-                    driver,  buttons)
-    except Exception as e:
-        print(f"Error: {e}")
-
-
-def setFiltersCityName(driver, hover_place_xpath: list, button_xpath):
-    # Wait for the hover element to be present
-    try:
-        hoverElements = []
-        for x in hover_place_xpath:
-            hover_element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, x))
-            )
-            hoverElements.append(hover_element)
-        # Initialize ActionChains for the driver
-        actions = ActionChains(driver)
-
-        # Hover over the specified element
-        for x in hoverElements:
-            actions.move_to_element(x).perform()
-
-        # Wait for the button to be visible after hovering
-        button = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, button_xpath))
-        )
-
-        # Click the button
-        button.click()
-        time.sleep(2)
-        click_button(
-            driver,  '/html/body/div[193]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input')
-        time.sleep(5)
-        click_button(
-            driver, '/html/body/div[193]/div[2]/div/div/div/div[3]/button[3]')
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-
-def setFiltersWeek(driver, hover_place_xpath: list, button_xpath):
-    # Wait for the hover element to be present
-    try:
-        hoverElements = []
-        for x in hover_place_xpath:
-            hover_element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, x))
-            )
-            hoverElements.append(hover_element)
-        # Initialize ActionChains for the driver
-        actions = ActionChains(driver)
-
-        # Hover over the specified element
-        for x in hoverElements:
-            actions.move_to_element(x).perform()
-
-        # Wait for the button to be visible after hovering
-        button = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, button_xpath))
-        )
-
-        # Click the button
-        button.click()
-        time.sleep(5)
-        click_button(
-            driver, '/html/body/div[194]/ul/li[2]')
-        time.sleep(10)
-
-    except Exception as e:
-        print(f"Error: {e}")
-
-
-def downloadData(driver, hover_place_xpath: list, button_xpath):
-    # Wait for the hover element to be present
-    try:
-        hoverElements = []
-        for x in hover_place_xpath:
-            hover_element = WebDriverWait(driver, 10).until(
-                EC.presence_of_element_located((By.XPATH, x))
-            )
-            hoverElements.append(hover_element)
-        # Initialize ActionChains for the driver
-        actions = ActionChains(driver)
-
-        # Hover over the specified element
-        for x in hoverElements:
-            actions.move_to_element(x).perform()
-
-        # Wait for the button to be visible after hovering
-        button = WebDriverWait(driver, 10).until(
-            EC.visibility_of_element_located((By.XPATH, button_xpath))
-        )
-
-        # Click the button
-        button.click()
-
-        time.sleep(12)
-
-        click_button(driver, '/html/body/div[7]/div[2]/div/div/a/i')
-
+            while True:
+                try:
+                    time.sleep(timeS+5)
+                    click_button(
+                        driver,  buttons)
+                    break
+                except:
+                    print(f'Button: {buttons} not found, trying again')
     except Exception as e:
         print(f"Error: {e}")
 
@@ -324,14 +227,14 @@ def downloadDailyOrders(driver):
 
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
                              f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
-                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+                             [(3, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (3, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
-                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(3, f'/html/body/div[{one+1}]/ul/li[2]')])
 
     time.sleep(15)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
-                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+                             f'/html/body/div[{two}]/ul/li[1]', [(5, '/html/body/div[7]/div[2]/div/div/a/i')])
 
     time.sleep(3)
     print('Finished downloading Daily Orders')
@@ -340,7 +243,7 @@ def downloadDailyOrders(driver):
 def downloadExpMetric(driver):
     time.sleep(5)
     print('Started downloading Exp metric')
-    driver.execute_script(f"window.scrollTo(0, {int(700*5.7)});")
+    driver.execute_script(f"window.scrollTo(3, {int(700*5.7)});")
     if SME:
         click_button(
             driver, '//*[@id="AYOTVDYju"]/div[2]/div[1]/div/div/ul/div[1]')
@@ -357,14 +260,14 @@ def downloadExpMetric(driver):
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
                              f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
-                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+                             [(3, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (3, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
-                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(3, f'/html/body/div[{one+1}]/ul/li[2]')])
 
     time.sleep(15)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
-                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+                             f'/html/body/div[{two}]/ul/li[1]', [(5, '/html/body/div[7]/div[2]/div/div/a/i')])
 
     time.sleep(3)
     print('Finished downloading Exp metric')
@@ -373,7 +276,7 @@ def downloadExpMetric(driver):
 def downloadBurnMetrics(driver):
     time.sleep(5)
     print('Started downloading Burn Metrics')
-    driver.execute_script(f"window.scrollTo(0, {int(700*6.8)});")
+    driver.execute_script(f"window.scrollTo(3, {int(700*6.8)});")
     if SME:
         click_button(
             driver, '//*[@id="RXUYBRryq"]/div[2]/div[1]/div/div/ul/div[1]')
@@ -390,14 +293,14 @@ def downloadBurnMetrics(driver):
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
                              f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
-                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+                             [(3, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (3, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
-                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(3, f'/html/body/div[{one+1}]/ul/li[2]')])
 
     time.sleep(15)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
-                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+                             f'/html/body/div[{two}]/ul/li[1]', [(5, '/html/body/div[7]/div[2]/div/div/a/i')])
 
     time.sleep(3)
     print('Finished downloading Burn Metrics')
@@ -406,7 +309,7 @@ def downloadBurnMetrics(driver):
 def downloadAverageTickets(driver):
     time.sleep(5)
     print('Started downloading Average Tickets')
-    driver.execute_script(f"window.scrollTo(0, {int(700*8.5)});")
+    driver.execute_script(f"window.scrollTo(3, {int(700*8.5)});")
     if SME:
         click_button(
             driver, '//*[@id="CjR1qoh7Q"]/div[2]/div[1]/div/div/ul/div[1]')
@@ -422,14 +325,14 @@ def downloadAverageTickets(driver):
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
                              f'//*[@id="{id}"]/div[2]/div/div[2]/div/div[1]/div/div/div/span',
-                             [(2, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (2, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
+                             [(3, f'/html/body/div[{one}]/div[2]/div/div/div/div[2]/div[2]/div[1]/div[3]/div[3]/label/span/input'), (3, f'/html/body/div[{one}]/div[2]/div/div/div/div[3]/button[3]')])
     time.sleep(5)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]',],
-                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(5, f'/html/body/div[{one+1}]/ul/li[2]')])
+                             f'//*[@id="{id}"]/div[2]/div/span/div/div/a', [(3, f'/html/body/div[{one+1}]/ul/li[2]')])
 
     time.sleep(15)
     generalClickerUsingHover(driver, [f'//*[@id="{id}"]/div[3]/div[2]', f'//*[@id="{id}"]/div[2]/div/div[1]/div/div'],
-                             f'/html/body/div[{two}]/ul/li[1]', [(12, f'/html/body/div[{7}]/div[2]/div/div/a/i')])
+                             f'/html/body/div[{two}]/ul/li[1]', [(5, '/html/body/div[7]/div[2]/div/div/a/i')])
 
     time.sleep(3)
     print('Finished downloading Average Tickets')
@@ -451,9 +354,16 @@ def body(driver):
     downloadAverageTickets(driver)
 
 
-SME = 0
-
-if __name__ == "__main__":
+def theWholeProcess():
     driver = start()
     body(driver)
     quit(driver)
+
+
+SME = 1
+
+if __name__ == "__main__":
+    theWholeProcess()
+    SME = 0
+    time.sleep(60)
+    theWholeProcess()

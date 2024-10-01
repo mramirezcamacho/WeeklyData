@@ -135,7 +135,8 @@ def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / G
     return generalData
 
 
-def getDataRefined(metricParameter: str = None, percentage=False):
+def getDataRefined(metricParameter: str = None):
+    percentage = dataIfPercentage[metricParameter]
     files = get_all_files_in_folder(FOLDER)
     ready = False
     for filePath in files:
@@ -154,26 +155,27 @@ def getDataRefined(metricParameter: str = None, percentage=False):
     return data
 
 
-def showData(onlyAColumn: str = None, percentage=False, metricParameter: str = None):
-    data = getDataRefined(metricParameter, percentage)
+def showData(onlyAColumn: str = None, metricParameter: str = None, all=False):
+    data = getDataRefined(metricParameter)
 
     for country, values in data.items():
-        print(f'For the country {country} this are the stats')
-        for metric, listCities in values.items():
-            metric = metric.replace('sortedBy', '')
-            if (onlyAColumn is None) or (onlyAColumn.lower() == metric.lower()):
-                print(f'In the metric {metric} the best are:')
-                best = listCities[:3]
-                for city in best:
-                    print(f'The city {city[0]} stats are:')
-                    showNicely(city[1], percentage)
-                print(f'In the metric {metric} the worse are:')
-                worse = listCities[-3:]
-                for city in worse:
-                    print(f'The city {city[0]} stats are:')
-                    showNicely(city[1], percentage)
-                print('\n')
-        print('\n')
+        if all or (country in ['MX', 'CO']):
+            print(f'For the country {country} this are the stats')
+            for metric, listCities in values.items():
+                metric = metric.replace('sortedBy', '')
+                if (onlyAColumn is None) or (onlyAColumn.lower() == metric.lower()):
+                    print(f'In the metric {metric} the best are:')
+                    best = listCities[:3]
+                    for city in best:
+                        print(f'The city {city[0]} stats are:')
+                        showNicely(city[1], dataIfPercentage[metricParameter])
+                    print(f'In the metric {metric} the worse are:')
+                    worse = listCities[-3:]
+                    for city in worse:
+                        print(f'The city {city[0]} stats are:')
+                        showNicely(city[1], dataIfPercentage[metricParameter])
+                    print('\n')
+            print('\n')
 
 
 def showNicely(data: dict, percentage: bool):
@@ -184,8 +186,8 @@ def showNicely(data: dict, percentage: bool):
             print(f'\t{timeMetric}: {round(number, 2)}')
 
 
-def showDataCity(metricParameter: str = None, percentage=False, city: str = None):
-    data = getDataRefined(metricParameter, percentage)
+def showDataCity(metricParameter: str = None, city: str = None):
+    data = getDataRefined(metricParameter)
 
     for country, values in data.items():
         print(f'For the country {country} this are the stats')
@@ -194,7 +196,7 @@ def showDataCity(metricParameter: str = None, percentage=False, city: str = None
             for cityData in listCities:
                 if cityData[0].lower() == city.lower():
                     print(f'The city {cityData[0]} stats are:')
-                    showNicely(cityData[1], percentage)
+                    showNicely(cityData[1], dataIfPercentage[metricParameter])
                     return
         print('\n')
 
@@ -229,29 +231,37 @@ NominalWoW
 NominalWo2W
 '''
 
-FOLDER = 'CKA'
+general, specific = 0, 1
 
-general, specific = 1, 0
-
-column = 'Traffic'
-column = 'R Burn / GMV'
-column = 'B2C / GMV'
-column = 'TED / GMV'
+column = 'Avg Delivery Fee'
+column = 'Shop Enter UV'
+column = 'B Cancel Rate'
+column = '5 + order store count(week total)'
 column = 'B P1*P2'
+column = 'B2C / GMV'
+column = 'R Burn / GMV'
+column = 'Traffic'
+column = 'ASP'
+column = 'TED / GMV'
 column = 'Daily Orders'
 
 
-city = 'Guadalajara'
 city = 'Mexico City'
+city = 'Guadalajara'
 city = 'Monterrey'
-city = 'Bogotá, D.C.'
 city = 'Medellín'
+city = 'Bogotá, D.C.'
 
-metric = 'NominalWoW'
+metric = 'NominalWo2W'
 
-if general:
-    print(f'Using the column {column}:')
-    showData(metric, dataIfPercentage[column], column)
-if specific:
-    print(f'Using the column {column}:')
-    showDataCity(column, dataIfPercentage[column], city)
+FOLDER = 'CKA'
+ALL = 0
+if __name__ == "__main__":
+    if general:
+        print(f'Using the column {column}:')
+        showData(metric, column, all=ALL)
+    if specific:
+        print(f'Using the column {column}:')
+        showDataCity(column,  city)
+
+# pprint(getDataRefined(column, dataIfPercentage[column]))
