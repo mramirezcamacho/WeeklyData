@@ -238,3 +238,12 @@ if __name__ == "__main__":
     getText('5 + order store count(week total)', False)
     print('Cities')
     getTextCities()
+
+'''
+if need to update goals
+
+daily orders: https://docs.google.com/spreadsheets/d/1P-XZJ16iyRfltzTNRMqPLLL29BTCd_Vw7FYUWeYD6aM/edit?gid=627266180#gid=627266180
+
+everything else: https://docs.google.com/spreadsheets/d/1P-XZJ16iyRfltzTNRMqPLLL29BTCd_Vw7FYUWeYD6aM/edit?gid=627266180#gid=627266180
+
+'''
