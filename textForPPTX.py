@@ -1,6 +1,8 @@
 from main import *
 import random
 
+metrics2Follow = ('sortedByNominalWo2W', "nominalWo2W")
+
 
 def prettyNames(metric):
     return metric.replace('B ', '').replace(' / GMV', '').replace('*', '')
@@ -197,12 +199,12 @@ def getText(metric: str, aditionalText: bool):
                 bestString += 'Where '
                 randomInt = random.randint(0, 1)
                 for i, reason in enumerate(reasons):
-                    metric, percentage, nominal = reason
+                    metric, percentage, metricChange = reason
                     metric = prettyNames(metric)
                     bestString += f'''{cities[i]} {['saw', 'had'][randomInt]} a {'drop' if percentage < 0 else 'increase'} in {
                         metric} of {'+' if percentage > 0 else ''}{round(percentage*100, 2)}%'''
-                    if 'pp' in str(nominal):
-                        bestString += f'({nominal})'
+                    if 'pp' in str(metricChange):
+                        bestString += f'({metricChange})'
                     if index == len(suspects)-2:
                         bestString += ', '
                     elif index == len(suspects)-1:
@@ -212,12 +214,12 @@ def getText(metric: str, aditionalText: bool):
                     index += 1
             else:
                 for i, reason in enumerate(reasons):
-                    metric, percentage, nominal = reason
+                    metric, percentage, metricChange = reason
                     metric = prettyNames(metric)
                     bestString += f'''a {'drop' if percentage < 0 else 'increase'} in {
                         metric} of {'+' if percentage > 0 else ''}{round(percentage*100, 2)}%'''
-                    if 'pp' in str(nominal):
-                        bestString += f'({nominal})'
+                    if 'pp' in str(metricChange):
+                        bestString += f'({metricChange})'
                     if index == len(suspects)-2:
                         bestString += ', '
                     elif index == len(suspects)-1:
@@ -242,7 +244,7 @@ if __name__ == "__main__":
 '''
 if need to update goals
 
-daily orders: https://docs.google.com/spreadsheets/d/1P-XZJ16iyRfltzTNRMqPLLL29BTCd_Vw7FYUWeYD6aM/edit?gid=627266180#gid=627266180
+daily orders: https://docs.google.com/spreadsheets/d/1zTug9bpqMkloYDvOn9puxSGq_tfCS5Cw7h1fTpdSY-M/edit?gid=1565949866#gid=1565949866
 
 everything else: https://docs.google.com/spreadsheets/d/1P-XZJ16iyRfltzTNRMqPLLL29BTCd_Vw7FYUWeYD6aM/edit?gid=627266180#gid=627266180
 

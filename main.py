@@ -231,18 +231,18 @@ NominalWoW
 NominalWo2W
 '''
 
-general, specific = 0, 1
+general, specific = 1, 0
 
 column = 'Avg Delivery Fee'
 column = 'Shop Enter UV'
 column = 'B Cancel Rate'
-column = '5 + order store count(week total)'
 column = 'B P1*P2'
 column = 'B2C / GMV'
 column = 'R Burn / GMV'
 column = 'Traffic'
 column = 'ASP'
 column = 'TED / GMV'
+column = '5 + order store count(week total)'
 column = 'Daily Orders'
 
 
@@ -254,6 +254,7 @@ city = 'Bogotá, D.C.'
 
 metric = 'NominalWo2W'
 
+FOLDER = 'SME'
 FOLDER = 'CKA'
 ALL = 0
 if __name__ == "__main__":
