@@ -1,15 +1,11 @@
 1. Do a pip install of the requirements of the project, put in your terminal:
    pip install -r requirements.txt
-
-2. download the chromedriver that suits your needs (i used: https://storage.googleapis.com/chrome-for-testing-public/128.0.6613.137/win64/chromedriver-win64.zip)
-3. [NOT MANDATORY] If you want to instant login, create a "credentials.txt" file, the first line has to be the login, and the second line the password
-4. Run the 'automater.py' Script, and get a coffee!
-   If you get a error or something reload the page (Control+R) interrupt the script (Control+C in the terminal)
-   and re start the script, it should work nicely
-
-5. Download the files from the Dchat urls.
-6. Download the +5 stars Rs for CKA and SME with the Dims Country Code and city_name
+2. Download the table in (https://bigdata.intra.didiglobal.com/analysis_platform_static/board.html#/?type=reportView&reportId=97153&source=config)
+   with both verticals in the filters and the city_name active
+3. Download the +5 stars Rs for CKA and SME with the Dims Country Code and city_name
    (http://star.intra.didiglobal.com/?menuId=C6DIHi0RC).
-7. run the 'textForPPTX.py' file in order to get the data for the daily orders, +5 Rs and cities rows
-   of the weekly (the other are extremely easy)
-8. Put some color in the GoogleSlide presentation
+4. put both files in the "weeklyData" folder
+5. run the 'textForPPTX.py' file in order to get the data for the daily orders, +5 Rs and cities rows
+   of the weekly (the other metrics doesn't need further analysis)
+   Run it for each vertical, put 'CKA' or 'SME' depending what you need
+6. Put some color in the GoogleSlide presentation
