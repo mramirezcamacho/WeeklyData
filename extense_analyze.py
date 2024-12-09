@@ -35,10 +35,18 @@ def get_all_files_in_folder(folder_path):
         return []
 
 
-def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / GMV'):
+def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / GMV', vertical='CKA'):
     df = pd.read_csv(file)
-
-    options = ['Date(周)', 'stat_date(周)', 'Stat Date(周)']
+    if 'organization_type' in df.columns:
+        if ('CKA' != vertical):
+            if (vertical not in list(df['organization_type'].values)):
+                vertical_text = 'Normal' if 'SME' == vertical else 'SME'
+            else:
+                vertical_text = vertical
+        else:
+            vertical_text = 'CKA'
+        df = df[df['organization_type'] == vertical_text]
+    options = ['Date(周)', 'stat_date(周)', 'Stat Date(周)', 'stat_date(周)']
     statVariable = None
     for option in options:
         try:
@@ -50,9 +58,9 @@ def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / G
             break
 
     try:
-        countries = df['Country'].unique()
-    except:
         countries = df['Country Code'].unique()
+    except:
+        countries = df['country_code'].unique()
 
     df[columnOfInterest] = df[columnOfInterest].replace('-', '0')
 
@@ -61,9 +69,9 @@ def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / G
     # Process each country
     for country in countries:
         try:
-            countryDF = df[df['Country'] == country]
-        except:
             countryDF = df[df['Country Code'] == country]
+        except:
+            countryDF = df[df['country_code'] == country]
         cities = countryDF['city_name'].unique()
         dataPerCountry = {}
 
@@ -135,18 +143,18 @@ def getData(file='CKA/CKAWeekly2', percentage=True, columnOfInterest='R Burn / G
     return generalData
 
 
-def getDataRefined(metricParameter: str = None):
+def getDataRefined(metricParameter: str = None, vertical: str = 'CKA'):
     percentage = dataIfPercentage[metricParameter]
-    files = get_all_files_in_folder(FOLDER)
+    files = get_all_files_in_folder("weeklyData")
     ready = False
     for filePath in files:
         try:
-            data = getData(file=f'{FOLDER}/{filePath}', percentage=percentage,
-                           columnOfInterest=metricParameter)
+            data = getData(file=f'weeklyData/{filePath}', percentage=percentage,
+                           columnOfInterest=metricParameter, vertical=vertical)
             ready = True
         except Exception as e:
-            """print(filePath)
-            print(e)"""
+            # print(filePath)
+            # print(e)
             pass
         if ready:
             break
@@ -156,7 +164,7 @@ def getDataRefined(metricParameter: str = None):
 
 
 def showData(onlyAColumn: str = None, metricParameter: str = None, all=False):
-    data = getDataRefined(metricParameter)
+    data = getDataRefined(metricParameter, VERTICAL)
 
     for country, values in data.items():
         if all or (country in ['MX', 'CO']):
@@ -187,7 +195,7 @@ def showNicely(data: dict, percentage: bool):
 
 
 def showDataCity(metricParameter: str = None, city: str = None):
-    data = getDataRefined(metricParameter)
+    data = getDataRefined(metricParameter, VERTICAL)
 
     for country, values in data.items():
         print(f'For the country {country} this are the stats')
@@ -231,31 +239,31 @@ NominalWoW
 NominalWo2W
 '''
 
-general, specific = 1, 0
+general, specific = 0, 1
 
 column = 'Avg Delivery Fee'
 column = 'Shop Enter UV'
-column = 'B Cancel Rate'
 column = 'B P1*P2'
-column = 'B2C / GMV'
 column = 'R Burn / GMV'
 column = 'Traffic'
-column = 'ASP'
 column = 'TED / GMV'
 column = '5 + order store count(week total)'
 column = 'Daily Orders'
+column = 'ASP'
+column = 'B2C / GMV'
+column = 'B Cancel Rate'
 
 
 city = 'Mexico City'
 city = 'Guadalajara'
 city = 'Monterrey'
-city = 'Medellín'
 city = 'Bogotá, D.C.'
+city = 'Medellín'
 
 metric = 'NominalWo2W'
 
-FOLDER = 'SME'
-FOLDER = 'CKA'
+VERTICAL = 'SME'
+VERTICAL = 'CKA'
 ALL = 0
 if __name__ == "__main__":
     if general:

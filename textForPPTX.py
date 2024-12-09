@@ -1,4 +1,4 @@
-from main import *
+from extense_analyze import *
 import random
 
 metrics2Follow = ('sortedByNominalWo2W', "nominalWo2W")
@@ -21,7 +21,7 @@ def mostAffectedMetric(positive: bool, cities: list[str], country):
         biggestResponsable.append(["", 0, 0])
     for i, responsable in enumerate(possibleResponsables):
         percentage = dataIfPercentage[responsable]
-        miniData = getDataRefined(responsable)
+        miniData = getDataRefined(responsable, VERTICAL)
         for j, city in enumerate(cities):
             for cityDict, dataDict in miniData[country]['sortedByNominalWo2W']:
                 if cityDict == city:
@@ -55,7 +55,7 @@ def joinCities(cities: list, separadorFinal: str = '&'):
 
 
 def getTextCities():
-    data = getDataRefined('Daily Orders')
+    data = getDataRefined('Daily Orders', VERTICAL)
     citiesPerCountry = {
         'MX': ['Mexico City',
                'Monterrey',
@@ -152,7 +152,7 @@ def getTextCities():
 def getText(metric: str, aditionalText: bool):
     numberOfSuspects = 2
     metricParameter = metric
-    data = getDataRefined(metricParameter)
+    data = getDataRefined(metricParameter, VERTICAL)
     countries = ['MX', 'CO', 'PE', 'CR']
     for country in countries:
         sortedData = data[country]['sortedByNominalWo2W']
@@ -233,15 +233,23 @@ def getText(metric: str, aditionalText: bool):
         print(bestString)
 
 
+VERTICAL = 'SME'
 if __name__ == "__main__":
-    print('Daily Orders')
+    print(f'Daily Orders for {VERTICAL}')
     getText('Daily Orders', True)
-    print('5 + order store count(week total)')
+    print(f'5 + order store count(week total) for {VERTICAL}')
     getText('5 + order store count(week total)', False)
-    print('Cities')
+    print(f'Cities for {VERTICAL}')
     getTextCities()
 
 '''
+Here we should download the data (last 3 full weeks) with the columns (city_name and organization_type ON):
+
+https://bigdata.intra.didiglobal.com/analysis_platform_static/board.html#/?type=reportView&reportId=97153&source=config
+http://star.intra.didiglobal.com/?menuId=C6DIHi0RC
+
+Doesn't matter the order or the name of the files, just add both to the 'weeklyData' folder.
+
 if need to update goals
 
 daily orders: https://docs.google.com/spreadsheets/d/1zTug9bpqMkloYDvOn9puxSGq_tfCS5Cw7h1fTpdSY-M/edit?gid=1565949866#gid=1565949866
