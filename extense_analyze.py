@@ -239,7 +239,7 @@ NominalWoW
 NominalWo2W
 '''
 
-general, specific = 0, 1
+general, specific = 1, 0
 
 column = 'Avg Delivery Fee'
 column = 'Shop Enter UV'

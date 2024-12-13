@@ -1,3 +1,4 @@
+import sys
 from extense_analyze import *
 import random
 
@@ -233,8 +234,12 @@ def getText(metric: str, aditionalText: bool):
         print(bestString)
 
 
-VERTICAL = 'SME'
 if __name__ == "__main__":
+    if len(sys.argv) > 1:
+        VERTICAL = sys.argv[1].upper()
+    else:
+        VERTICAL = 'SME'
+        print("No input provided, default value is SME")
     print(f'Daily Orders for {VERTICAL}')
     getText('Daily Orders', True)
     print(f'5 + order store count(week total) for {VERTICAL}')

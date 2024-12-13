@@ -1,21 +1,34 @@
 import pandas as pd
 
 # Cargar datos y reemplazar '-' con 0
-data = pd.read_csv('queries/November/weeklyDataAugust2OctCKA.csv')
+data = pd.read_csv('queries/December/weeklyDataAugust2OctCKA.csv')
 data['Daily Orders'] = pd.to_numeric(data['Daily Orders'].replace('-', 0))
-
+LM, LM1, LM2 = 'Noviembre', 'Octubre', 'Septiembre'
 # Crear una columna de 'Mes' basada en 'stat_date(周)'
 
 
 def get_month(week):
-    if week in ['2024-07-29 / 2024-08-04', '2024-08-05 / 2024-08-11', '2024-08-12 / 2024-08-18',
-                '2024-08-19 / 2024-08-25', '2024-08-26 / 2024-09-01']:
-        return 'Agosto'
-    elif week in ['2024-09-02 / 2024-09-08', '2024-09-09 / 2024-09-15', '2024-09-16 / 2024-09-22',
-                  '2024-09-23 / 2024-09-29']:
+    if week in [
+        '2024-09-02 / 2024-09-08', '2024-09-09 / 2024-09-15',
+        '2024-09-16 / 2024-09-22', '2024-09-23 / 2024-09-29'
+    ]:
         return 'Septiembre'
-    else:
+    elif week in [
+        '2024-09-30 / 2024-10-06', '2024-10-07 / 2024-10-13',
+        '2024-10-14 / 2024-10-20', '2024-10-21 / 2024-10-27',
+        '2024-10-28 / 2024-11-03'
+    ]:
         return 'Octubre'
+    elif week in [
+        '2024-11-04 / 2024-11-10', '2024-11-11 / 2024-11-17',
+        '2024-11-18 / 2024-11-24', '2024-11-25 / 2024-12-01'
+    ]:
+        return 'Noviembre'
+    else:
+        print('-'*20)
+        print('¡Esto no debería pasar!')
+        print('-'*20)
+        return 'Mes desconocido'
 
 
 data['Mes'] = data['stat_date(周)'].apply(get_month)
@@ -30,16 +43,16 @@ for country, country_data in data.groupby('Country'):
         'Daily Orders'].mean().unstack(fill_value=0)
 
     # Calcular MoM y Mo2M porcentuales
-    avg_monthly_city['MoM (%)'] = ((avg_monthly_city['Octubre'] -
-                                    avg_monthly_city['Septiembre']) / avg_monthly_city['Septiembre']) * 100
-    avg_monthly_city['Mo2M (%)'] = ((avg_monthly_city['Octubre'] -
-                                     avg_monthly_city['Agosto']) / avg_monthly_city['Agosto']) * 100
+    avg_monthly_city['MoM (%)'] = round(((avg_monthly_city[LM] -
+                                          avg_monthly_city[LM1]) / avg_monthly_city[LM1]) * 100, 2)
+    avg_monthly_city['Mo2M (%)'] = round(((avg_monthly_city[LM] -
+                                           avg_monthly_city[LM2]) / avg_monthly_city[LM2]) * 100, 2)
 
     # Calcular MoM y Mo2M nominales
-    avg_monthly_city['MoM (nominal)'] = avg_monthly_city['Octubre'] - \
-        avg_monthly_city['Septiembre']
-    avg_monthly_city['Mo2M (nominal)'] = avg_monthly_city['Octubre'] - \
-        avg_monthly_city['Agosto']
+    avg_monthly_city['MoM (nominal)'] = avg_monthly_city[LM] - \
+        avg_monthly_city[LM1]
+    avg_monthly_city['Mo2M (nominal)'] = avg_monthly_city[LM] - \
+        avg_monthly_city[LM2]
 
     # Reemplazar valores infinitos o NaN en caso de divisiones por cero
     avg_monthly_city.replace([float('inf'), -float('inf')], 0, inplace=True)
